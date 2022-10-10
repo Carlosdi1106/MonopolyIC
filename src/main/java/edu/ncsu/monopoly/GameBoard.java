@@ -30,8 +30,9 @@ public class GameBoard {
 	}
 	
 	public void addCell(PropertyCell cell) {
-		int propertyNumber = getPropertyNumberForColor(cell.getColorGroup());
-		colorGroups.put(cell.getColorGroup(), new Integer(propertyNumber + 1));
+		String colorGroup = cell.getColorGroup();
+		int propertyNumber = getPropertyNumberForColor(colorGroup, true);
+		colorGroups.put(colorGroup, new Integer(propertyNumber + 1));
         cells.add(cell);
 	}
 
@@ -59,10 +60,10 @@ public class GameBoard {
 	
 	public PropertyCell[] getPropertiesInMonopoly(String color) {
 		PropertyCell[] monopolyCells = 
-			new PropertyCell[getPropertyNumberForColor(color)];
+			new PropertyCell[getPropertyNumberForColor(color, true)];
 		int counter = 0;
 		for (int i = 0; i < getCellNumber(); i++) {
-			Cell c = getCell(i);
+			IOwnable c = getCell(i);
 			if(c instanceof PropertyCell) {
 				PropertyCell pc = (PropertyCell)c;
 				if(pc.getColorGroup().equals(color)) {
@@ -74,7 +75,7 @@ public class GameBoard {
 		return monopolyCells;
 	}
 	
-	public int getPropertyNumberForColor(String name) {
+	public int getPropertyNumberForColor(String name, boolean visibility) {
 		Integer number = (Integer)colorGroups.get(name);
 		if(number != null) {
 			return number.intValue();
